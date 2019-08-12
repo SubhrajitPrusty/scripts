@@ -1,15 +1,29 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
-setup(name='instagram',
-      version='0.0.1',
-      description='Download pictures from INSTAGRAM',
-      author='Subhrajit Prusty',
-      url='https://github.com/SubhrajitPrusty/instagram-download/',
-      license='MIT',
-      install_requires=['splinter', 'bs4', 'click'],
-      py_modules=['instagram'],
-      entry_points="""
-	  [console_scripts]
-		instagram=instagram:insta
-		"""
-      )
+def readme():
+    try:
+        with open('README.md') as f:
+            return f.read()
+    except:
+        pass
+
+setup(name='instagram-download',
+	version='1.1.0',
+	description='Download pictures from instagram',
+	author='Subhrajit Prusty',
+	url='https://github.com/SubhrajitPrusty/instagram-download/',
+	author_email='subhrajit1997@gmail.com',
+
+	long_description=readme(),  
+	long_description_content_type='text/markdown', 
+	license='MIT',
+
+	setup_requires=['setuptools>=40.0.0'],
+      
+	install_requires=['splinter', 'bs4', 'click'],
+      	packages=find_packages(),
+	entry_points="""
+	[console_scripts]
+		instagram-dl=instagram:insta
+	"""
+)
