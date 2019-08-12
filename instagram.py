@@ -14,6 +14,9 @@ GECKODRIVER_PATH = "./geckodriver/geckodriver" if os.name == "posix" else "./gec
 @click.argument("username", type=click.STRING)
 @click.option("--gecko_path","-gp", "GECKODRIVER_PATH", default=GECKODRIVER_PATH, help="Enter path of gecko driver", type=click.Path())
 def insta(username, GECKODRIVER_PATH):
+    """
+    COMMAND LINE INTERFACE TO DOWNLOAD IMAGES FROM INSTAGRAM.
+    """
     link = URL + username
     print("Downloading images {}...".format(username))
 
