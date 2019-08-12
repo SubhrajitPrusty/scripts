@@ -1,26 +1,25 @@
-# script to download photos from instagram
+#! /usr/bin/env python3
 
-import click
 import os
+import click
 from splinter import Browser
 from bs4 import BeautifulSoup as bs4
 
-
 URL = "https://www.instagram.com/"
-
 GECKODRIVER_PATH = "./geckodriver/geckodriver" if os.name == "posix" else "./geckodriver/geckodriver.exe"
 
 @click.command()
 @click.argument("username", type=click.STRING)
-@click.option("--gecko_path","-gp", "GECKODRIVER_PATH", default=GECKODRIVER_PATH, help="Enter path of gecko driver", type=click.Path())
-def insta(username, GECKODRIVER_PATH):
+@click.option("--gecko_path", "-gp", default=GECKODRIVER_PATH, help="Enter path of gecko driver", type=click.Path())
+def insta(username, gecko_path):
     """
-    COMMAND LINE INTERFACE TO DOWNLOAD IMAGES FROM INSTAGRAM.
+    Download images from instagram
     """
+    
     link = URL + username
     print("Downloading images {}...".format(username))
 
-    with Browser("firefox", headless=True, executable_path=GECKODRIVER_PATH) as browser:
+    with Browser("firefox", headless=True, executable_path=gecko_path) as browser:
         browser.visit(link)
         html = browser.html
         soup = bs4(html, "html.parser")
@@ -29,7 +28,7 @@ def insta(username, GECKODRIVER_PATH):
 
     for x in data:
         x = x.get("src")
-        os.system("wget --no-check-certificate -c -N -P ./Images/" + username + " " + x)
+        os.system(f"wget --no-check-certificate -c -N -P Images/{username} {x}")
         print("Downloaded {}".format(x))
 
     def rename_image_dir(foldername):
@@ -40,8 +39,10 @@ def insta(username, GECKODRIVER_PATH):
             if not filename.endswith(".jpg"):
                 os.rename(os.path.join(path, filename), os.path.join(path, foldername + '_' + str(i) + ".jpg"))
             i += 1
-        print("Files Conversion Completed")
 
     rename_image_dir(username)
 
     print("\nFiles downloaded into Images/{}".format(username))
+    
+if __name__ == "__main__":
+    insta()
